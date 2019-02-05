@@ -1,1 +1,0 @@
-# Bandy-jump
