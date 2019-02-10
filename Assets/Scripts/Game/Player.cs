@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
     private float tp;
     public float jumpForce = 7.5f;
     public float Globspeed = 4;
-    Rigidbody2D rb;
+    private Rigidbody2D rb;
     private Transform _transform;
     private Animator animator;
     int playerLayer, platformLayer;
@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         _transform = GetComponent<Transform>();
         animator = GetComponent<Animator>();
-
+        
         platformLayer = LayerMask.NameToLayer("Platform");
         playerLayer = LayerMask.NameToLayer("Player");
 
@@ -43,13 +43,21 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if(rb.velocity.y>0)
+
+        if (DestroyPlayer.statusDeath == false)
         {
-            Physics2D.IgnoreLayerCollision(playerLayer,platformLayer,true);
+            if (rb.velocity.y > 0)
+            {
+                Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, true);
+            }
+            else if (rb.velocity.y <= 0)
+            {
+                Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, false);
+            }
         }
-        else if (rb.velocity.y <= 0)
+        else
         {
-            Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, false);
+            Physics2D.IgnoreLayerCollision(platformLayer, playerLayer, true);
         }
 
         if (PlayerPrefs.GetString("Managements")== "Tilt")
@@ -84,7 +92,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (rb.velocity.y <= 0)
+        if (rb.velocity.y < 0)
         {
             if (rb != null)
             {

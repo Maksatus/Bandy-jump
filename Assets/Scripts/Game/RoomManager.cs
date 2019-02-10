@@ -15,7 +15,6 @@ public class RoomManager : MonoBehaviour
             nextRoom = false;
             nextRoomPoint = null;
         }
-
     }
 }
 

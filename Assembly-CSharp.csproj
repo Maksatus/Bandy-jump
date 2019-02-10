@@ -58,6 +58,8 @@
      <Compile Include="Assets\Scripts\Game\DestroyPlayer.cs" />
      <Compile Include="Assets\Scripts\Game\DissolvePlatform.cs" />
      <Compile Include="Assets\Scripts\Game\MovePlatform.cs" />
+     <Compile Include="Assets\Scripts\Game\MoveSinPlatform.cs" />
+     <Compile Include="Assets\Scripts\Game\MoveSuperPlatform.cs" />
      <Compile Include="Assets\Scripts\Game\MoveYplatform.cs" />
      <Compile Include="Assets\Scripts\Game\OutputPoints.cs" />
      <Compile Include="Assets\Scripts\Game\Platform.cs" />

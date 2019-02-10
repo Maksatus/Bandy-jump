@@ -54,14 +54,10 @@ public class ButtonPause : MonoBehaviour {
         if (DestroyPlayer.statusDeath==true)
         {
             move.SetActive(false);
-            time = 1;
+            time = 0;
             kill.SetActive(true);
             ButtonPaus.SetActive(false);
-            DestroyPlayer.statusDeath = false;
-            if (PlayerPrefs.GetString("Music") == "yes")
-            {
-                GameObject.Find("LoseAudio").GetComponent<AudioSource>().Play();
-            }
+            
         }
     }
 
@@ -91,6 +87,7 @@ public class ButtonPause : MonoBehaviour {
 
    public void Again()
     {
+       
         if (PlayerPrefs.GetString("Music") == "yes")
         {
             GetComponent<AudioSource>().Play();
@@ -101,6 +98,7 @@ public class ButtonPause : MonoBehaviour {
 
  public void Pas()
     {
+        DestroyPlayer.statusDeath = false;
         time = 1;
         kill.SetActive(false);
         ButtonPaus.SetActive(true);

@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public class MovePlatform : Platform {
+public class MovePlatform : MonoBehaviour {
 
     public float speed = 2;
-    
 
-    private float dist;
+    [HideInInspector]
+    public float dist;
 
     void Start()
     {
@@ -18,7 +18,9 @@ public class MovePlatform : Platform {
         else if (Screen.width > 1500) dist = 2.7f;
         
     }
-    bool a=false;
+    [HideInInspector]
+    public bool a=false;
+
     void Update()
     {
         transform.Translate(speed * Time.deltaTime, 0, 0);
