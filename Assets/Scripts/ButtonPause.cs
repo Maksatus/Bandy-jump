@@ -7,19 +7,37 @@ public class ButtonPause : MonoBehaviour {
     public GameObject pause;
     public GameObject kill;
     public GameObject ButtonPaus;
+    public GameObject move;
+
+    void Start()
+    {
+        if (PlayerPrefs.GetString("Managements") == "Button")
+        {
+            move.SetActive(true);
+        }
+        else
+        {
+            move.SetActive(false);
+        }
+    }
+
 
     void Update()
     {
         Time.timeScale = time;
 
-        if(Input.GetKeyDown(KeyCode.Escape)&& isPaused == false && kill.activeSelf == false )
+        if (Input.GetKeyDown(KeyCode.Escape)&& isPaused == false && kill.activeSelf == false )
         {
-            isPaused = true; 
+            isPaused = true;
+            if (PlayerPrefs.GetString("Managements") == "Button")
+                move.SetActive(false);
         }
 
         else if(Input.GetKeyDown(KeyCode.Escape) && isPaused == true && kill.activeSelf == false)
         {
             isPaused = false;
+            if (PlayerPrefs.GetString("Managements") == "Button")
+                move.SetActive(true);
         }
 
         if (isPaused == true)
@@ -27,34 +45,34 @@ public class ButtonPause : MonoBehaviour {
             time = 0;
             pause.SetActive(true);
         }
-        else if (isPaused == false && DestroyPlayer.statusDeath == false)
+        else if (isPaused == false )
         {
             time = 1;
-            pause.SetActive(false);
+            pause.SetActive(false);  
         }
 
         if (DestroyPlayer.statusDeath==true)
         {
+            move.SetActive(false);
             time = 0;
             kill.SetActive(true);
             ButtonPaus.SetActive(false);
-            DestroyPlayer.statusDeath = false;
-            if (PlayerPrefs.GetString("Music") == "yes")
-            {
-                GameObject.Find("LoseAudio").GetComponent<AudioSource>().Play();
-            }
+            
         }
- 
     }
 
     public void ResumeButton(bool state)
     { 
             isPaused = state;
+        if (PlayerPrefs.GetString("Managements") == "Button")
+            move.SetActive(false);
     }
    
     public void PauseResume(bool state)
     {
             isPaused = state;
+        if (PlayerPrefs.GetString("Managements") == "Button")
+            move.SetActive(true);
     }
 
     public void Menu()
@@ -69,6 +87,7 @@ public class ButtonPause : MonoBehaviour {
 
    public void Again()
     {
+       
         if (PlayerPrefs.GetString("Music") == "yes")
         {
             GetComponent<AudioSource>().Play();
@@ -79,8 +98,10 @@ public class ButtonPause : MonoBehaviour {
 
  public void Pas()
     {
+        DestroyPlayer.statusDeath = false;
         time = 1;
         kill.SetActive(false);
         ButtonPaus.SetActive(true);
+        
     }
 }

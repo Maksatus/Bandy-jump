@@ -4,19 +4,18 @@ public class Player : MonoBehaviour
 {
     private float tp;
     public float jumpForce = 7.5f;
-    public float Globspeed = 15;
-    Rigidbody2D rb;
+    public float Globspeed = 4;
+    private Rigidbody2D rb;
     private Transform _transform;
     private Animator animator;
-
     int playerLayer, platformLayer;
-
+    float speedbutton=0;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         _transform = GetComponent<Transform>();
         animator = GetComponent<Animator>();
-
+        
         platformLayer = LayerMask.NameToLayer("Platform");
         playerLayer = LayerMask.NameToLayer("Player");
 
@@ -26,30 +25,50 @@ public class Player : MonoBehaviour
         else if (Screen.width == 800) tp = 3.1f;
         else if (Screen.width >= 1000) tp = 2.7f;
     }
-    
+
+    public void LeftButtonDown()
+    {
+        speedbutton = Globspeed;
+        _transform.eulerAngles = new Vector3(0, 180, 0);
+    }
+    public void RightButtonDown()
+    {
+        speedbutton = Globspeed;
+        _transform.eulerAngles = new Vector3(0, 0, 0);
+    }
+    public void StopMove()
+    {
+        speedbutton = 0;
+    }
+
     void Update()
     {
-        if(rb.velocity.y>0)
+
+        if (DestroyPlayer.statusDeath == false)
         {
-            Physics2D.IgnoreLayerCollision(playerLayer,platformLayer,true);
+            if (rb.velocity.y > 0)
+            {
+                Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, true);
+            }
+            else if (rb.velocity.y <= 0)
+            {
+                Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, false);
+            }
         }
-        else if (rb.velocity.y <= 0)
+        else
         {
-            Physics2D.IgnoreLayerCollision(playerLayer, platformLayer, false);
+            Physics2D.IgnoreLayerCollision(platformLayer, playerLayer, true);
         }
 
-        if (Application.platform == RuntimePlatform.Android)
+        if (PlayerPrefs.GetString("Managements")== "Tilt")
         {
             Move();
         }
-
-        else if (Application.platform == RuntimePlatform.WindowsEditor)
+         else if(PlayerPrefs.GetString("Managements") == "Button")
         {
-            
-            rb.velocity = new Vector2(Input.GetAxis("Horizontal") * (Globspeed / 3), rb.velocity.y);
-            if (rb.velocity.x > 0) _transform.eulerAngles = new Vector3(0, 0, 0);
-            else if (rb.velocity.x < 0) _transform.eulerAngles = new Vector3(0, 180, 0);
+            transform.Translate(speedbutton * Time.deltaTime, 0, 0);
         }
+
         //телепортация 
         if (transform.position.x < -tp)
         {
@@ -73,7 +92,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (rb.velocity.y <= 0)
+        if (rb.velocity.y < 0)
         {
             if (rb != null)
             {
